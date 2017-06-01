@@ -131,5 +131,9 @@ func (s *Sub) Close() (err error) {
 		return errors.ErrIsClosed
 	}
 
+	if s.c == nil {
+		return
+	}
+
 	return s.c.Close()
 }
