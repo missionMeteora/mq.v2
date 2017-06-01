@@ -1,12 +1,12 @@
 package reqresp
 
 import (
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 )
 
 // Request is the request type
 type Request struct {
-	c *conn.Conn
+	c conn.Conn
 }
 
 // Request is the request type

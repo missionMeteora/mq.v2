@@ -41,7 +41,8 @@ type Conn interface {
 	Connect(nc net.Conn) (err error)
 	Key() string
 	Created() time.Time
-	OnDisconnect(fns ...OnDisconnectFn) *conn
+	OnConnect(fns ...OnConnectFn) Conn
+	OnDisconnect(fns ...OnDisconnectFn) Conn
 	Get(fn func([]byte)) (err error)
 	GetStr() (msg string, err error)
 	Put(b []byte) (err error)
@@ -220,14 +221,14 @@ func (c *conn) Created() time.Time {
 
 // OnConnect will append an OnConnect func, referenced conn is returned for chaining
 // Note: This function is intended to be called before connection, it is NOT thread-safe
-func (c *conn) OnConnect(fns ...OnConnectFn) *conn {
+func (c *conn) OnConnect(fns ...OnConnectFn) Conn {
 	c.onC = append(c.onC, fns...)
 	return c
 }
 
 // OnDisconnect will append an onDisconnect func, referenced conn is returned for chaining
 // Note: This function is intended to be called before connection, it is NOT thread-safe
-func (c *conn) OnDisconnect(fns ...OnDisconnectFn) *conn {
+func (c *conn) OnDisconnect(fns ...OnDisconnectFn) Conn {
 	c.onD = append(c.onD, fns...)
 	return c
 }
@@ -280,7 +281,7 @@ func (c *conn) Close() (err error) {
 }
 
 // OnConnectFn is called when a connection occurs
-type OnConnectFn func(*conn) error
+type OnConnectFn func(Conn) error
 
 // OnDisconnectFn is called when a connection ends
-type OnDisconnectFn func(*conn)
+type OnDisconnectFn func(Conn)

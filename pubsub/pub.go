@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/missionMeteora/journaler"
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 	"github.com/missionMeteora/toolkit/errors"
 )
 
@@ -17,7 +17,7 @@ func NewPub(addr string) (pp *Pub, err error) {
 		return
 	}
 
-	p.sm = make(map[string]*conn.Conn)
+	p.sm = make(map[string]conn.Conn)
 	p.out = journaler.New("Pub", addr)
 	p.onDC = append(p.onDC, p.remove)
 
@@ -33,7 +33,7 @@ type Pub struct {
 	l net.Listener
 
 	// Subscriber map
-	sm map[string]*conn.Conn
+	sm map[string]conn.Conn
 
 	// On connect functions
 	onC []conn.OnConnectFn
@@ -43,7 +43,7 @@ type Pub struct {
 	closed bool
 }
 
-func (p *Pub) get(key string) (c *conn.Conn, ok bool) {
+func (p *Pub) get(key string) (c conn.Conn, ok bool) {
 	p.mux.RLock()
 	defer p.mux.RUnlock()
 
@@ -51,7 +51,7 @@ func (p *Pub) get(key string) (c *conn.Conn, ok bool) {
 	return
 }
 
-func (p *Pub) getConn(key string) (c *conn.Conn, ok bool) {
+func (p *Pub) getConn(key string) (c conn.Conn, ok bool) {
 	p.mux.RLock()
 	c, ok = p.get(key)
 	p.mux.RUnlock()
@@ -70,7 +70,7 @@ func (p *Pub) close(wg *sync.WaitGroup) (errs *errors.ErrorList) {
 
 	wg.Add(len(p.sm))
 	for _, s := range p.sm {
-		go func(c *conn.Conn) {
+		go func(c conn.Conn) {
 			errs.Push(c.Close())
 			wg.Done()
 		}(s)
@@ -79,7 +79,7 @@ func (p *Pub) close(wg *sync.WaitGroup) (errs *errors.ErrorList) {
 	return
 }
 
-func (p *Pub) remove(c *conn.Conn) {
+func (p *Pub) remove(c conn.Conn) {
 	p.mux.Lock()
 	delete(p.sm, c.Key())
 	p.mux.Unlock()

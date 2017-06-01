@@ -3,7 +3,7 @@ package utilities
 import (
 	"net"
 
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 	"github.com/missionMeteora/toolkit/errors"
 )
 
@@ -27,7 +27,7 @@ type BasicAuth struct {
 }
 
 // Check will check credentials for an inbound connection
-func (b *BasicAuth) Check(c *conn.Conn) (err error) {
+func (b *BasicAuth) Check(c conn.Conn) (err error) {
 	var user, pass string
 	if user, err = c.GetStr(); err != nil {
 		return
@@ -48,7 +48,7 @@ func (b *BasicAuth) Check(c *conn.Conn) (err error) {
 }
 
 // Auth will send an authentication request to an outbound connection
-func (b *BasicAuth) Auth(c *conn.Conn) (err error) {
+func (b *BasicAuth) Auth(c conn.Conn) (err error) {
 	if err = c.Put([]byte(b.user)); err != nil {
 		return
 	}

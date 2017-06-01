@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 
 	"github.com/go-mangos/mangos"
 	mpair "github.com/go-mangos/mangos/protocol/pair"

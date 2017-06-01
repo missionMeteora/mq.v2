@@ -1,12 +1,12 @@
 package reqresp
 
 import (
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 )
 
 // Response is the response type
 type Response struct {
-	c  *conn.Conn
+	c  conn.Conn
 	fn func(byte) (resp []byte, err error)
 }
 

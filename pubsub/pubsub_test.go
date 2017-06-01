@@ -5,10 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"fmt"
-
-	"github.com/missionMeteora/mq/conn"
-	"github.com/missionMeteora/mq/utilities"
+	"github.com/missionMeteora/mq.v2/conn"
+	"github.com/missionMeteora/mq.v2/utilities"
 )
 
 var testVal = []byte("hello world!")
@@ -47,7 +45,7 @@ func TestPubSub(t *testing.T) {
 		}
 
 		sema := make(chan struct{}, 1)
-		p.OnConnect(ba.Check, func(*conn.Conn) error {
+		p.OnConnect(ba.Check, func(conn.Conn) error {
 			sema <- struct{}{}
 			return nil
 		})

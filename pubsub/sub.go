@@ -7,7 +7,7 @@ import (
 	"net"
 
 	"github.com/missionMeteora/journaler"
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 	"github.com/missionMeteora/toolkit/errors"
 )
 
@@ -24,7 +24,7 @@ func NewSub(addr string, cof bool) *Sub {
 type Sub struct {
 	mux sync.RWMutex
 
-	c   *conn.Conn
+	c   conn.Conn
 	out *journaler.Journaler
 
 	// On connect functions

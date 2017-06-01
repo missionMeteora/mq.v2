@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/missionMeteora/mq/conn"
+	"github.com/missionMeteora/mq.v2/conn"
 )
 
 func TestBasicAuth(t *testing.T) {
