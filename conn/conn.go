@@ -272,10 +272,12 @@ func (c *conn) Close() (err error) {
 	// Call onDisconnect before we close the net.Conn
 	c.onDisconnect()
 
+	c.mux.Lock()
 	if c.nc != nil {
 		// Close net.Conn
 		err = c.nc.Close()
 	}
+	c.mux.Unlock()
 
 	return
 }
