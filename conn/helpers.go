@@ -13,6 +13,7 @@ type buffer struct {
 func (b *buffer) ReadN(r io.Reader, n uint64) (err error) {
 	var rn int
 	b.n = 0
+
 	if n > b.len {
 		// Our internal slice is too small, grow before reading
 		b.bs = make([]byte, n)
@@ -20,7 +21,7 @@ func (b *buffer) ReadN(r io.Reader, n uint64) (err error) {
 	}
 
 	for b.n < n && err == nil {
-		rn, err = r.Read(b.bs[b.n:b.len])
+		rn, err = r.Read(b.bs[b.n:n])
 		b.n += uint64(rn)
 	}
 
